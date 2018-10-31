@@ -57,7 +57,7 @@ while not success:
                 else :
                     print(ERROR_TOO_MUCH_HEREOS)
                     #continue
-                    J'arrive pas à refaire partir la boucle à partir de la ligne48
+                    #J'arrive pas à refaire partir la boucle à partir de la ligne48
             else :
                 print(ERROR_NB_HEREOS_PER_ROUND_INPUT)
 
