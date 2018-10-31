@@ -1,15 +1,23 @@
 MIN_NB_PLAYER = 1
 MAX_NB_PLAYER = 5
-NB_HEROES = 116
-ERROR_NB_PLAYER_INPUT = "La valeur entrée n'est pas un entier compris entre {} et {}\n".format(MIN_NB_PLAYER, MAX_NB_PLAYER)
+MIN_NB_ROUND = 1
+MAX_NB_ROUND = 10
+MIN_NB_HEREOS_PER_ROUND = 1
+MAX_NB_HEREOS_PER_ROUND = 20
 
+NB_HEROES = 116
+
+ERROR_NB_PLAYER_INPUT = "La valeur entrée n'est pas un entier compris entre {} et {}\n".format(MIN_NB_PLAYER, MAX_NB_PLAYER)
+ERROR_NB_ROUND_INPUT = "La valeur entrée n'est pas un entier compris entre {} et {}\n".format(MIN_NB_ROUND, MAX_NB_ROUND)
+ERROR_NB_HEREOS_PER_ROUND_INPUT = "La valeur entrée n'est pas un entier compris entre {} et {}\n".format(MIN_NB_HEREOS_PER_ROUND, MAX_NB_HEREOS_PER_ROUND)
+ERROR_TOO_MUCH_HEREOS = "Il n'y a pas suffisamment de héros disponibles pour permettre cette répartition"
 
 success = False
 nb_joueur = 0
 
 while not success:
     try:
-        nb_joueur = int(input("Entrer le nombre de joueur (entre {} et {}):\n".format(MIN_NB_PLAYER, MAX_NB_PLAYER)))
+        nb_joueur = int(input("Entrer le nombre de joueur (entre {} et {}) :\n".format(MIN_NB_PLAYER, MAX_NB_PLAYER)))
         if (nb_joueur <= MAX_NB_PLAYER) and (nb_joueur >= MIN_NB_PLAYER):
             success = True
         else:
@@ -18,3 +26,47 @@ while not success:
         print(ERROR_NB_PLAYER_INPUT)
 
 print("Vous avez sélectionné {} joueur(s)!".format(nb_joueur))
+
+
+success = False
+nb_round = 0
+while not success:
+    try:
+        nb_round = int(input("Entrer le nombre de rounds pour gagner (entre {} et {}) :\n".format(MIN_NB_ROUND, MAX_NB_ROUND)))
+        if (nb_round <= MAX_NB_ROUND) and (nb_round >= MIN_NB_ROUND):
+            success = True
+        else :
+            print(ERROR_NB_ROUND_INPUT)
+    except ValueError:
+            print(ERROR_NB_ROUND_INPUT)
+print("Vous avez choisi {} round(s) pour gagner !".format(nb_round))
+
+
+success = False
+nb_hereos_per_round = [0] * nb_round
+nb_hereos_remaining = NB_HEROES
+while not success:
+    try:
+        for round in range (nb_round):
+            print("{}/{} sont disponibles\n".format(nb_hereos_remaining, NB_HEROES), end ='')
+            nb_hereos_per_round[round] = int(input("Entrer le nombre de héros pour le round n°{}/{} par joueur (entre {} et {}):\n".format(round+1, nb_round, MIN_NB_HEREOS_PER_ROUND, MAX_NB_HEREOS_PER_ROUND)))
+            if (nb_hereos_per_round[round] <= MAX_NB_HEREOS_PER_ROUND) and (nb_hereos_per_round[round]>= MIN_NB_HEREOS_PER_ROUND):
+                nb_hereos_remaining = nb_hereos_remaining - (nb_joueur * nb_hereos_per_round[round])
+                if nb_hereos_remaining >= 0 :
+                    success = True
+                else :
+                    print(ERROR_TOO_MUCH_HEREOS)
+                    #continue
+                    J'arrive pas à refaire partir la boucle à partir de la ligne48
+            else :
+                print(ERROR_NB_HEREOS_PER_ROUND_INPUT)
+
+    except ValueError:
+            print(ERROR_NB_HEREOS_PER_ROUND_INPUT)
+
+print("Vous avez choisi", nb_hereos_per_round, "pour chaque round !")
+
+pull_hereos = 0
+for round in range (nb_round) :
+    pull_hereos = nb_joueur * nb_hereos_per_round[round] + pull_hereos
+print("{} parmi les {} héros seront proposés, {} ne seront pas proposés !\n".format(pull_hereos, NB_HEROES, NB_HEROES-pull_hereos))
