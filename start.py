@@ -1,29 +1,20 @@
-nb_heros_per_round = [O] * nbRound
-total_pull_heros = 0
-nb_total_heros = 116
-#37force
-#37agi
-#42intel
-while True:
-    if nb_players <= 0 or nb_players > 5 :
-        break
-    else :
-        continue
+MIN_NB_PLAYER = 1
+MAX_NB_PLAYER = 5
+NB_HEROES = 116
+ERROR_NB_PLAYER_INPUT = "La valeur entrée n'est pas un entier compris entre {} et {}\n".format(MIN_NB_PLAYER, MAX_NB_PLAYER)
 
-nb_round = int(input("How many rounds to win ?"))
-nb_heros_per_round = [O] * nbRound
-total_pull = 0
-nb_total_heros = 116
 
-for round in nbRound :
-  nb_heros_per_round[round] = int(input("How many heros per round (1-20)?"))
-  if nb_heros_per_round[round] < 1 or nb_heros_per_round[round] > 20 :
-    break
-  else :
-    continue
-    total_pull = nb_players * nb_heros_per_round + total_pull
-    if totalpull > nb_total_heros :
-        print("Too much heros in rounds")
-        break
-    else :
-        continue
+success = False
+nb_joueur = 0
+
+while not success:
+    try:
+        nb_joueur = int(input("Entrer le nombre de joueur (entre {} et {}):\n".format(MIN_NB_PLAYER, MAX_NB_PLAYER)))
+        if (nb_joueur <= MAX_NB_PLAYER) and (nb_joueur >= MIN_NB_PLAYER):
+            success = True
+        else:
+            print(ERROR_NB_PLAYER_INPUT)
+    except ValueError:
+        print(ERROR_NB_PLAYER_INPUT)
+
+print("Vous avez sélectionné {} joueur(s)!".format(nb_joueur))
