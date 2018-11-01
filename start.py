@@ -11,7 +11,8 @@ NB_HEROES = 116
 ERROR_NB_PLAYER_INPUT = "La valeur entrée n'est pas un entier compris entre {} et {}\n".format(MIN_NB_PLAYER, MAX_NB_PLAYER)
 ERROR_NB_ROUND_INPUT = "La valeur entrée n'est pas un entier compris entre {} et {}\n".format(MIN_NB_ROUND, MAX_NB_ROUND)
 ERROR_NB_HEREOS_PER_ROUND_INPUT = "La valeur entrée n'est pas un entier compris entre {} et {}\n".format(MIN_NB_HEREOS_PER_ROUND, MAX_NB_HEREOS_PER_ROUND)
-ERROR_TOO_MUCH_HEREOS = "Il n'y a pas suffisamment de héros disponibles pour permettre cette répartition \nVeuillez sélectionner moins de héros"
+ERROR_TOO_MUCH_HEREOS = "Il n'y a pas suffisamment de héros disponibles pour permettre cette répartition \nVeuillez sélectionner moins de héros\n"
+ERROR_ANSWER_REDISTRIBUTION_REMAINING = "Votre réponse ne correspond pas à 'yes' ou 'no'."
 
 success = False
 nb_joueur = 0
@@ -84,6 +85,26 @@ while not success:
 print("Vous avez choisi", nb_hereos_per_round, "pour chaque round !")
 
 pull_hereos = 0
+
 for round in range (nb_round) :
     pull_hereos = nb_joueur * nb_hereos_per_round[round] + pull_hereos
-print("{} parmi les {} héros seront proposés, {} ne seront pas proposés !\n".format(pull_hereos, NB_HEROES, NB_HEROES-pull_hereos))
+print("{} parmi les {} héros seront proposés, {} héros non distribué(s) !\n".format(pull_hereos, NB_HEROES, NB_HEROES-pull_hereos))
+
+
+success = False
+answer_redistribution_remaining = None
+while not success:
+    try:
+        answer_redistribution_remaining = None
+        answer_redistribution_remaining = str.upper(input("Voulez-vous redistribuer aléatoirement les héros restant à certains joueurs (yes or no) :"))
+        if answer_redistribution_remaining == 'YES':
+            print("{} héros redistribué(s) aléatoirement au premier round\n".format(NB_HEROES-pull_hereos))
+            success = True
+        elif answer_redistribution_remaining == 'NO':
+            print("{} héros absent(s) du jeu\n".format(NB_HEROES-pull_hereos))
+            success = True
+        elif (answer_redistribution_remaining != 'YES') or (answer_redistribution_remaining != 'NO'):
+            print(ERROR_ANSWER_REDISTRIBUTION_REMAINING)
+
+    except ValueError:
+        print(ERROR_ANSWER_REDISTRIBUTION_REMAINING)
