@@ -13,6 +13,28 @@ ERROR_NB_ROUND_INPUT = "La valeur entrée n'est pas un entier compris entre {} e
 ERROR_NB_HEREOS_PER_ROUND_INPUT = "La valeur entrée n'est pas un entier compris entre {} et {}\n".format(MIN_NB_HEREOS_PER_ROUND, MAX_NB_HEREOS_PER_ROUND)
 ERROR_TOO_MUCH_HEREOS = "Il n'y a pas suffisamment de héros disponibles pour permettre cette répartition \nVeuillez sélectionner moins de héros\n"
 ERROR_ANSWER_REDISTRIBUTION_REMAINING = "Votre réponse ne correspond pas à 'yes' ou 'no'."
+ERROR_ANSWER_NAME_JOUEUR = "Votre réponse ne correspond pas à 'yes' ou 'no'."
+
+import json
+from random import *
+
+json_data = open("hero_modified.json").read()
+data = json.loads(json_data)
+
+json_param = open("players_rounds_tab.json").read()
+param = json.loads(json_param)
+
+list_of_id_str = []
+list_of_id_agi = []
+list_of_id_int = []
+
+for hero in data:
+	if hero["primary_attr"] == "str":
+		list_of_id_str.append(hero["id"])
+	elif hero["primary_attr"] == "agi":
+		list_of_id_agi.append(hero["id"])
+	elif hero["primary_attr"] == "int":
+		list_of_id_int.append(hero["id"])
 
 success = False
 nb_joueur = 0
@@ -90,21 +112,56 @@ for round in range (nb_round) :
     pull_hereos = nb_joueur * nb_hereos_per_round[round] + pull_hereos
 print("{} parmi les {} héros seront proposés, {} héros non distribué(s) !\n".format(pull_hereos, NB_HEROES, NB_HEROES-pull_hereos))
 
-
-success = False
-answer_redistribution_remaining = None
-while not success:
-    try:
-        answer_redistribution_remaining = None
-        answer_redistribution_remaining = str.upper(input("Voulez-vous redistribuer aléatoirement les héros restant à certains joueurs (yes or no) :"))
-        if answer_redistribution_remaining == 'YES':
-            print("{} héros redistribué(s) aléatoirement au premier round\n".format(NB_HEROES-pull_hereos))
-            success = True
-        elif answer_redistribution_remaining == 'NO':
-            print("{} héros absent(s) du jeu\n".format(NB_HEROES-pull_hereos))
-            success = True
-        elif (answer_redistribution_remaining != 'YES') or (answer_redistribution_remaining != 'NO'):
+if nb_hereos_remaining > 0:
+    success = False
+    answer_redistribution_remaining = None
+    while not success:
+        try:
+            answer_redistribution_remaining = None
+            answer_redistribution_remaining = str.upper(input("Voulez-vous redistribuer aléatoirement les héros restant à certains joueurs : 'yes' or 'no'"))
+            if answer_redistribution_remaining == 'YES':
+                print("{} héros redistribué(s) aléatoirement au premier round\n".format(NB_HEROES-pull_hereos))
+                success = True
+            elif answer_redistribution_remaining == 'NO':
+                print("{} héros absent(s) du jeu\n".format(NB_HEROES-pull_hereos))
+                success = True
+            elif (answer_redistribution_remaining != 'YES') or (answer_redistribution_remaining != 'NO'):
+                print(ERROR_ANSWER_REDISTRIBUTION_REMAINING)
+        except ValueError:
             print(ERROR_ANSWER_REDISTRIBUTION_REMAINING)
 
+
+name_joueur = [0] * nb_joueur
+
+success = False
+answer_name_player = None
+while not success:
+    try:
+        answer_name_player = None
+        answer_name_player = str.upper(input("Voulez-vous rentrer les pseudos des joueurs (par défaut : Joueur 1) : 'yes' or 'no'"))
+        if answer_name_player == 'YES':
+            for joueur in range (nb_joueur):
+                name_joueur[joueur] = input("Pseudo du joueur {}/{} :\n".format(joueur+1, nb_joueur))
+            success = True
+        elif answer_name_player == 'NO':
+            print("Pseudo(s) par défaut utilisé(s)")
+            success = True
+        elif (answer_name_player != 'YES') or (answer_name_player != 'NO'):
+            print(ERROR_ANSWER_NAME_JOUEUR)
     except ValueError:
-        print(ERROR_ANSWER_REDISTRIBUTION_REMAINING)
+        print(ERROR_ANSWER_NAME_JOUEUR)
+
+print(name_joueur)
+round = 0
+for round in range (0, nb_round, 1):
+    pick_list = [0] * nb_hereos_per_round[round]
+    for hereos in range (nb_hereos_per_round[round]):
+        pick_list[hereos] = choice(list_of_id_agi)
+        b = list_of_id_agi.index(pick_list[hereos])
+        del list_of_id_agi[b]
+    name_list = []
+    round = round +1
+    for hero in data:
+        if hero["id"] in pick_list:
+            name_list.append(hero["localized_name"])
+    print(name_list)
