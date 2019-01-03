@@ -29,7 +29,11 @@ print(len(list_of_id_str))
 print(len(list_of_id_int))
 
 
-print(param[2]["4rounds"])
-
 for round in range (nb_round) :
     for hereos in nb_hereos_per_round
+
+
+def random_and_delete (sourcelist, sourcelist2, ciblelist, rang):
+    ciblelist[rang] = choice(sourcelist)
+    del sourcelist[sourcelist.index(ciblelist[rang])]
+    del sourcelist2[sourcelist2.index(ciblelist[rang])]
