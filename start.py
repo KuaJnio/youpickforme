@@ -237,3 +237,4 @@ for round in range (nb_round):
                 print(" ")
 
 print("Victoire de la totalité des {} manches, en {} parties jouées !\n".format(nb_round, compteur))
+input()
