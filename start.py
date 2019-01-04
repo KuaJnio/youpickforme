@@ -148,9 +148,7 @@ while not success:
     except ValueError:
         print(ERROR_ANSWER_AUTO_ROUND)
 
-for round in range (nb_round) :
-    nb_hereos_remaining = nb_hereos_remaining -(nb_joueur * nb_hereos_per_round[round])
-print(nb_hereos_remaining)
+
 
 def ask_input(round):
     erreur = False
