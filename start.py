@@ -56,7 +56,7 @@ for hero in data:
 
 success = False
 nb_joueur = 0
-
+print("You Pick for Me - v. alpha - aut0wash & KuaJ")
 while not success:
     try:
         nb_joueur = int(input("Entrer le nombre de joueur (entre {} et {}) :\n".format(MIN_NB_PLAYER, MAX_NB_PLAYER)))
@@ -91,7 +91,7 @@ answer_name_player = None
 while not success:
     try:
         answer_name_player = None
-        answer_name_player = str.upper(input("Voulez-vous rentrer les pseudos des joueurs (par défaut : Joueur 1) : 'yes' or 'no'"))
+        answer_name_player = str.upper(input("Voulez-vous rentrer les pseudos des joueurs (par défaut : Joueur 1) : 'yes' or 'no'\n"))
         if answer_name_player == 'YES':
             for joueur in range (nb_joueur):
                 name_joueur[joueur] = input("Pseudo du joueur {}/{} :\n".format(joueur+1, nb_joueur))
@@ -129,7 +129,7 @@ answer_auto_round = None
 while not success:
     try:
         answer_auto_round = None
-        answer_auto_round = str.upper(input("Souhaitez-vous utiliser les paramètres par défaut pour chaque round ? 'yes' ou 'no'." ))
+        answer_auto_round = str.upper(input("Souhaitez-vous utiliser les paramètres par défaut pour chaque round ? 'yes' ou 'no'\n" ))
         if answer_auto_round == 'YES':
             if nb_joueur == 2:
                 nb_hereos_per_round = liste2joueurs[nb_round-2]
@@ -218,7 +218,7 @@ for round in range (nb_round):
         print(" ")
         list_general.append(name_list)
     while not success:
-        answer_result = str.upper(input("Victory ? : 'yes' or 'no'"))
+        answer_result = str.upper(input("Victory ? : 'yes' or 'no'\n"))
         if answer_result == 'YES':
             print(" ")
             compteur = compteur +1
