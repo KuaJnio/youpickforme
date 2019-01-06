@@ -22,9 +22,6 @@ from random import *
 json_data = open("hero_modified.json").read()
 data = json.loads(json_data)
 
-json_param = open("players_rounds_tab.json").read()
-param = json.loads(json_param)
-
 list_of_id = []
 list_of_id_str = []
 list_of_id_agi = []
@@ -39,8 +36,6 @@ nb_hereos_per_round = [0]
 nb_hereos_remaining = NB_HEROES
 nb_hereos_remaining_player = 0
 
-
-
 for hero in data:
 	if hero["primary_attr"] == "str":
 		list_of_id_str.append(hero["id"])
@@ -51,8 +46,6 @@ for hero in data:
 
 for hero in data:
     list_of_id.append(hero["id"])
-
-
 
 success = False
 nb_joueur = 0
